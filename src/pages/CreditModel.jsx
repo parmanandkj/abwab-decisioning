@@ -89,7 +89,7 @@ export default function CreditModel({ onBack }) {
 
       {/* ── SECTION 1: Model Metadata ── */}
       <SectionLabel>Model Metadata</SectionLabel>
-      <div className="grid grid-cols-4 gap-4 mb-2">
+      <div className="grid grid-cols-3 gap-4 mb-2">
         <div className="bg-abwab-card border border-abwab-border rounded-lg p-4">
           <div className="text-xs text-abwab-muted mb-1">Algorithm</div>
           <div className="text-lg font-semibold text-white">{meta.algorithm}</div>
@@ -103,7 +103,7 @@ export default function CreditModel({ onBack }) {
           <div className="text-lg font-semibold text-white">{meta.training_date}</div>
         </div>
       </div>
-      <div className="grid grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-3 gap-4 mb-8">
         <div className="bg-abwab-card border border-abwab-border rounded-lg p-4">
           <div className="text-xs text-abwab-muted mb-1">Total observations</div>
           <div className="text-lg font-semibold text-white">{meta.total_observations.toLocaleString()}</div>
@@ -111,10 +111,6 @@ export default function CreditModel({ onBack }) {
         <div className="bg-abwab-card border border-abwab-border rounded-lg p-4">
           <div className="text-xs text-abwab-muted mb-1">Portfolio default rate</div>
           <div className="text-lg font-semibold text-white">{meta.default_rate_pct}%</div>
-        </div>
-        <div className="bg-abwab-card border border-abwab-border rounded-lg p-4">
-          <div className="text-xs text-abwab-muted mb-1">Train / test split</div>
-          <div className="text-lg font-semibold text-white">{meta.train_split_pct}% / {meta.test_split_pct}%</div>
         </div>
         <div className="bg-abwab-card border border-abwab-border rounded-lg p-4">
           <div className="text-xs text-abwab-muted mb-1">Cutoff threshold</div>
