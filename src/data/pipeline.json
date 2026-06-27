@@ -1,0 +1,70 @@
+{
+  "kpis": {
+    "total_qualified": 5,
+    "approved": 3,
+    "referred": 1,
+    "exceptions": 0
+  },
+  "applications": [
+    {
+      "app_id": "APP-2024-00001",
+      "business_name": "Al Marai Distribution Co.",
+      "cr_number": "1010012345",
+      "product": "Working Capital",
+      "product_key": "working_capital",
+      "facility_amount_sar": 500000,
+      "tenor_months": 24,
+      "submitted": "1 month ago",
+      "status": "Approved",
+      "case_file": "data/sample_cases/case_01_approve.json"
+    },
+    {
+      "app_id": "APP-2024-00002",
+      "business_name": "Riyad Tech Solutions",
+      "cr_number": "1010023456",
+      "product": "Equipment Finance",
+      "product_key": "asset_finance",
+      "facility_amount_sar": 850000,
+      "tenor_months": 36,
+      "submitted": "25 days ago",
+      "status": "Referred",
+      "case_file": "data/sample_cases/case_02_refer.json"
+    },
+    {
+      "app_id": "APP-2024-00003",
+      "business_name": "Saudi Digital Trading Est.",
+      "cr_number": "1010034567",
+      "product": "Trade Finance",
+      "product_key": "invoice_financing",
+      "facility_amount_sar": 1200000,
+      "tenor_months": 12,
+      "submitted": "20 days ago",
+      "status": "Approved",
+      "case_file": "data/sample_cases/case_04_approve_trade.json"
+    },
+    {
+      "app_id": "APP-2024-00004",
+      "business_name": "Najd Electronics LLC",
+      "cr_number": "1010045678",
+      "product": "Murabaha Financing",
+      "product_key": "working_capital",
+      "facility_amount_sar": 350000,
+      "tenor_months": 18,
+      "submitted": "15 days ago",
+      "status": "Declined",
+      "case_file": "data/sample_cases/case_03_decline.json"
+    },
+    {
+      "app_id": "APP-2024-00005",
+      "business_name": "Hala Logistics Co.",
+      "cr_number": "1010056789",
+      "product": "Supply Chain Finance",
+      "product_key": "growth_finance",
+      "facility_amount_sar": 720000,
+      "tenor_months": 24,
+      "submitted": "10 days ago",
+      "status": "Approved",
+      "case_file": "data/sample_cases/case_05_approve_logistics.json"
+    }
+  ]
+}

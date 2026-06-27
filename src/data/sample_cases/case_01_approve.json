@@ -1,0 +1,37 @@
+{
+  "pd_score": 0.014,
+  "borrower": {
+    "business_name": "Al Marai Distribution Co.",
+    "cr_number": "1010234567",
+    "industry_label": "Food & Beverage Distribution",
+    "region_label": "Riyadh",
+    "annual_revenue_sar": 5500000,
+    "working_capital_sar": 1300000
+  },
+  "features": {
+    "years_in_business": 8,
+    "annual_revenue": 5500000,
+    "dscr": 1.85,
+    "debt_to_equity": 1.4,
+    "has_active_default": false,
+    "simah_score": 720,
+    "leverage_ratio": 1.4,
+    "gross_profit_margin": 0.28,
+    "net_profit_margin": 0.12,
+    "debt_servicing_ratio": 0.18,
+    "return_on_assets": 0.11,
+    "cash_inflow_outflow_ratio": 1.35,
+    "current_ratio": 1.8,
+    "lcr": 1.45,
+    "business_age_months": 96,
+    "saudi_ownership_pct": 100,
+    "number_of_facilities": 1,
+    "past_dues_count": 0,
+    "active_defaults": 0,
+    "bounced_cheques_12m": 0,
+    "bounced_checks_count": 0,
+    "industry_isic4_code": "4619",
+    "collateral_type": "real_estate",
+    "collateral_value": 600000
+  }
+}

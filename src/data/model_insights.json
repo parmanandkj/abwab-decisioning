@@ -1,0 +1,47 @@
+{
+  "metadata": {
+    "algorithm": "Gradient Boosted Trees",
+    "version": "v2.1",
+    "training_date": "April 2026",
+    "total_observations": 4847,
+    "default_rate_pct": 8.3,
+    "train_split_pct": 80,
+    "test_split_pct": 20,
+    "cutoff_threshold": 0.12
+  },
+  "performance": {
+    "gini": 0.72,
+    "roc_auc": 0.86,
+    "ks_statistic": 0.58,
+    "calibration_error": 0.031
+  },
+  "feature_importance": [
+    { "feature": "simah_score",              "importance_pct": 22, "direction": "reduces_risk" },
+    { "feature": "leverage_ratio",            "importance_pct": 18, "direction": "increases_risk" },
+    { "feature": "gross_profit_margin",       "importance_pct": 16, "direction": "reduces_risk" },
+    { "feature": "debt_servicing_ratio",      "importance_pct": 13, "direction": "increases_risk" },
+    { "feature": "return_on_assets",          "importance_pct": 10, "direction": "reduces_risk" },
+    { "feature": "past_dues_count",           "importance_pct":  8, "direction": "increases_risk" },
+    { "feature": "cash_inflow_outflow_ratio", "importance_pct":  7, "direction": "reduces_risk" },
+    { "feature": "active_defaults",           "importance_pct":  6, "direction": "increases_risk" }
+  ],
+  "score_distribution": {
+    "bins": [
+      { "range": "0.00-0.05", "count": 1483 },
+      { "range": "0.05-0.10", "count": 1214 },
+      { "range": "0.10-0.15", "count":  869 },
+      { "range": "0.15-0.20", "count":  601 },
+      { "range": "0.20-0.25", "count":  342 },
+      { "range": "0.25-0.30", "count":  193 },
+      { "range": "0.30-0.35", "count":   97 },
+      { "range": "0.35-0.40", "count":   48 }
+    ]
+  },
+  "confusion_matrix": {
+    "true_positive":   58,
+    "false_positive":  12,
+    "true_negative":  876,
+    "false_negative":  23,
+    "note": "Evaluated on the held-out test set of 969 observations at a decision cutoff of 0.12."
+  }
+}

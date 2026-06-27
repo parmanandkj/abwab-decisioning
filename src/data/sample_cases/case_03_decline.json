@@ -1,0 +1,37 @@
+{
+  "pd_score": 0.182,
+  "borrower": {
+    "business_name": "Haifa Food Services",
+    "cr_number": "1010456789",
+    "industry_label": "Food Services & Catering",
+    "region_label": "Jeddah",
+    "annual_revenue_sar": 980000,
+    "working_capital_sar": 120000
+  },
+  "features": {
+    "years_in_business": 2,
+    "annual_revenue": 980000,
+    "dscr": 0.95,
+    "debt_to_equity": 4.2,
+    "has_active_default": true,
+    "simah_score": 510,
+    "leverage_ratio": 4.2,
+    "gross_profit_margin": 0.12,
+    "net_profit_margin": -0.02,
+    "debt_servicing_ratio": 0.58,
+    "return_on_assets": -0.02,
+    "cash_inflow_outflow_ratio": 0.89,
+    "current_ratio": 0.9,
+    "lcr": 0.75,
+    "business_age_months": 24,
+    "saudi_ownership_pct": 70,
+    "number_of_facilities": 3,
+    "past_dues_count": 4,
+    "active_defaults": 1,
+    "bounced_cheques_12m": 2,
+    "bounced_checks_count": 2,
+    "industry_isic4_code": "5610",
+    "collateral_type": "unsecured",
+    "collateral_value": 0
+  }
+}

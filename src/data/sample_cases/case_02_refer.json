@@ -1,0 +1,37 @@
+{
+  "pd_score": 0.084,
+  "borrower": {
+    "business_name": "Najd Construction Supplies",
+    "cr_number": "1010345678",
+    "industry_label": "Construction Materials",
+    "region_label": "Riyadh",
+    "annual_revenue_sar": 4100000,
+    "working_capital_sar": 850000
+  },
+  "features": {
+    "years_in_business": 5,
+    "annual_revenue": 4100000,
+    "dscr": 1.28,
+    "debt_to_equity": 2.6,
+    "has_active_default": false,
+    "simah_score": 640,
+    "leverage_ratio": 2.6,
+    "gross_profit_margin": 0.18,
+    "net_profit_margin": 0.06,
+    "debt_servicing_ratio": 0.34,
+    "return_on_assets": 0.05,
+    "cash_inflow_outflow_ratio": 1.12,
+    "current_ratio": 1.3,
+    "lcr": 1.1,
+    "business_age_months": 60,
+    "saudi_ownership_pct": 85,
+    "number_of_facilities": 2,
+    "past_dues_count": 1,
+    "active_defaults": 0,
+    "bounced_cheques_12m": 0,
+    "bounced_checks_count": 0,
+    "industry_isic4_code": "4120",
+    "collateral_type": "equipment",
+    "collateral_value": 400000
+  }
+}
