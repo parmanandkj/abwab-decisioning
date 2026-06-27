@@ -261,9 +261,21 @@ ${recommendationSection}
 export default function RiskDecisioning() {
   const [selectedApp, setSelectedApp] = useState(null)
   const [selectedCaseFile, setSelectedCaseFile] = useState(null)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [statusFilter, setStatusFilter] = useState('All')
 
   // PIPELINE VIEW
   if (!selectedApp) {
+    const filteredApplications = pipeline.applications.filter(app => {
+      const matchesSearch =
+        searchQuery === '' ||
+        app.business_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        app.cr_number.includes(searchQuery)
+      const matchesStatus =
+        statusFilter === 'All' || app.status === statusFilter
+      return matchesSearch && matchesStatus
+    })
+
     return (
       <div className="p-6">
 
@@ -272,6 +284,56 @@ export default function RiskDecisioning() {
           <MetricCard label="Approved" value={pipeline.kpis.approved} />
           <MetricCard label="Referred" value={pipeline.kpis.referred} />
           <MetricCard label="Exceptions" value={pipeline.kpis.exceptions} />
+        </div>
+
+        {/* Status filter tabs */}
+        <div className="flex gap-1 mb-4">
+          {['All', 'Approved', 'Referred', 'Declined'].map(status => (
+            <button
+              key={status}
+              onClick={() => setStatusFilter(status)}
+              className={`px-4 py-1.5 text-sm rounded-md transition-colors ${
+                statusFilter === status
+                  ? 'bg-abwab-purple-dim text-abwab-purple font-medium'
+                  : 'text-abwab-muted hover:text-white'
+              }`}
+            >
+              {status}
+            </button>
+          ))}
+        </div>
+
+        {/* Search and filter row */}
+        <div className="flex gap-3 mb-4">
+          <div className="relative flex-1 max-w-sm">
+            <svg
+              className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-abwab-muted"
+              fill="none" stroke="currentColor" viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input
+              type="text"
+              placeholder="Search by name or CR..."
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+              className="w-full bg-abwab-card border border-abwab-border text-white text-sm
+                         rounded-lg pl-9 pr-4 py-2 outline-none focus:border-abwab-purple
+                         transition-colors placeholder-abwab-muted"
+            />
+          </div>
+          <select
+            value={statusFilter}
+            onChange={e => setStatusFilter(e.target.value)}
+            className="bg-abwab-card border border-abwab-border text-abwab-muted text-sm
+                       rounded-lg px-3 py-2 outline-none focus:border-abwab-purple
+                       transition-colors"
+          >
+            {['All Statuses', 'Approved', 'Referred', 'Declined'].map(s => (
+              <option key={s} value={s === 'All Statuses' ? 'All' : s}>{s}</option>
+            ))}
+          </select>
         </div>
 
         <div className="border border-abwab-border rounded-lg overflow-hidden">
@@ -283,7 +345,7 @@ export default function RiskDecisioning() {
             ))}
           </div>
 
-          {pipeline.applications.map((app) => {
+          {filteredApplications.map((app) => {
             const caseFile = CASE_FILES[app.case_file]
             return (
               <div
@@ -320,6 +382,11 @@ export default function RiskDecisioning() {
               </div>
             )
           })}
+          {filteredApplications.length === 0 && (
+            <div className="px-4 py-8 text-center text-sm text-abwab-muted">
+              No applications match your search or filter.
+            </div>
+          )}
         </div>
       </div>
     )
