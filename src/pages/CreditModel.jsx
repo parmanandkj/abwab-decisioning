@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid,
   Tooltip, ResponsiveContainer, ReferenceLine, Cell,
@@ -35,6 +36,185 @@ function SectionLabel({ children }) {
   return (
     <div className="text-xs font-medium text-abwab-muted uppercase tracking-wider mb-3">
       {children}
+    </div>
+  )
+}
+
+// ─── Simulator helpers ─────────────────────────────────────────────────────────
+
+function runSimulation(cutoff, simData) {
+  const { bins, avg_lgd_assumption, avg_ead_assumption } = simData
+  const total = bins.reduce((s, b) => s + b.count, 0)
+  let approvedCount = 0
+  let totalECL = 0
+  bins.forEach(bin => {
+    if (bin.midpoint_pd < cutoff) {
+      approvedCount += bin.count
+      totalECL += bin.midpoint_pd * avg_lgd_assumption * avg_ead_assumption * bin.count
+    }
+  })
+  const approvalRate = (approvedCount / total) * 100
+  const committedExposure = approvedCount * avg_ead_assumption
+  const eclPct = committedExposure > 0 ? (totalECL / committedExposure) * 100 : 0
+  return { approvedCount, approvalRate, totalECL, committedExposure, eclPct, total }
+}
+
+function CutoffSimulator({ simData }) {
+  const [cutoff, setCutoff] = useState(
+    () => modelInsights.metadata.cutoff_threshold
+  )
+
+  const result = runSimulation(cutoff, simData)
+
+  const curveData = []
+  for (let c = 0.02; c <= 0.50; c += 0.02) {
+    const r = runSimulation(parseFloat(c.toFixed(2)), simData)
+    curveData.push({
+      cutoff: parseFloat(c.toFixed(2)),
+      approvalRate: parseFloat(r.approvalRate.toFixed(1)),
+      eclPct: parseFloat(r.eclPct.toFixed(2)),
+    })
+  }
+
+  return (
+    <div>
+      {/* Slider */}
+      <div className="mb-6">
+        <div className="flex justify-between items-center mb-2">
+          <label className="text-sm text-white font-medium">Cutoff threshold</label>
+          <span className="text-lg font-semibold text-amber-400">{cutoff.toFixed(2)}</span>
+        </div>
+        <input
+          type="range"
+          min="0.02"
+          max="0.50"
+          step="0.01"
+          value={cutoff}
+          onChange={e => setCutoff(parseFloat(e.target.value))}
+          className="w-full h-1.5 rounded-full appearance-none cursor-pointer
+                     bg-abwab-border accent-abwab-purple"
+        />
+        <div className="flex justify-between text-xs text-abwab-muted mt-1">
+          <span>0.02 (tightest)</span>
+          <span>0.50 (loosest)</span>
+        </div>
+      </div>
+
+      {/* Three KPI cards */}
+      <div className="grid grid-cols-3 gap-4 mb-6">
+        <div className="bg-abwab-card border border-abwab-border rounded-lg p-4">
+          <div className="text-xs text-abwab-muted mb-2">Approval rate</div>
+          <div className="text-2xl font-semibold text-white">
+            {result.approvalRate.toFixed(1)}%
+          </div>
+          <div className="text-xs text-abwab-muted mt-1">
+            {result.approvedCount} of {result.total} borrowers
+          </div>
+        </div>
+        <div className="bg-abwab-card border border-abwab-border rounded-lg p-4">
+          <div className="text-xs text-abwab-muted mb-2">Estimated portfolio ECL</div>
+          <div className="text-2xl font-semibold text-white">
+            SAR {Math.round(result.totalECL).toLocaleString()}
+          </div>
+          <div className="text-xs text-abwab-muted mt-1">
+            On committed exposure of SAR {Math.round(result.committedExposure / 1_000_000 * 10) / 10}M
+          </div>
+        </div>
+        <div className="bg-abwab-card border border-abwab-border rounded-lg p-4">
+          <div className="text-xs text-abwab-muted mb-2">ECL as % of portfolio</div>
+          <div className="text-2xl font-semibold text-white">
+            {result.eclPct.toFixed(2)}%
+          </div>
+          <div className="text-xs text-abwab-muted mt-1">Expected loss rate</div>
+        </div>
+      </div>
+
+      {/* Trade-off curve */}
+      <div className="bg-abwab-card border border-abwab-border rounded-lg p-4">
+        <div className="text-sm font-medium text-white mb-1">
+          Approval rate vs ECL trade-off
+        </div>
+        <div className="text-xs text-abwab-muted mb-4">
+          As the cutoff tightens (moves left), fewer borrowers are approved and ECL falls.
+          As it loosens, volume grows but ECL rises. The vertical line shows your current cutoff.
+        </div>
+        <ResponsiveContainer width="100%" height={220}>
+          <BarChart data={curveData} margin={{ top: 4, right: 16, left: 0, bottom: 4 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#2A2A2A" vertical={false} />
+            <XAxis
+              dataKey="cutoff"
+              tick={{ fill: '#9CA3AF', fontSize: 10 }}
+              tickFormatter={v => v.toFixed(2)}
+              interval={2}
+              axisLine={{ stroke: '#2A2A2A' }}
+              tickLine={false}
+            />
+            <YAxis
+              yAxisId="left"
+              tick={{ fill: '#9CA3AF', fontSize: 10 }}
+              tickFormatter={v => `${v}%`}
+              axisLine={false}
+              tickLine={false}
+            />
+            <YAxis
+              yAxisId="right"
+              orientation="right"
+              tick={{ fill: '#9CA3AF', fontSize: 10 }}
+              tickFormatter={v => `${v}%`}
+              axisLine={false}
+              tickLine={false}
+            />
+            <Tooltip
+              contentStyle={{
+                background: '#141414',
+                border: '1px solid #2A2A2A',
+                borderRadius: '6px',
+                color: '#fff',
+                fontSize: '12px',
+              }}
+              formatter={(value, name) => [
+                `${value}%`,
+                name === 'approvalRate' ? 'Approval rate' : 'ECL rate',
+              ]}
+              labelFormatter={v => `Cutoff: ${v}`}
+            />
+            <ReferenceLine
+              yAxisId="left"
+              x={cutoff}
+              stroke="#F59E0B"
+              strokeWidth={2}
+              strokeDasharray="4 2"
+            />
+            <Bar yAxisId="left" dataKey="approvalRate" fill="#8B5CF6" fillOpacity={0.6}
+              radius={[2, 2, 0, 0]} name="approvalRate" />
+            <Bar yAxisId="right" dataKey="eclPct" fill="#EF4444" fillOpacity={0.5}
+              radius={[2, 2, 0, 0]} name="eclPct" />
+          </BarChart>
+        </ResponsiveContainer>
+        <div className="flex gap-4 mt-3 text-xs text-abwab-muted">
+          <span className="flex items-center gap-1.5">
+            <span className="w-2.5 h-2.5 rounded-sm bg-abwab-purple inline-block opacity-60" />
+            Approval rate (left axis)
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="w-2.5 h-2.5 rounded-sm bg-red-500 inline-block opacity-50" />
+            ECL rate (right axis)
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="w-0.5 h-3 bg-amber-400 inline-block" />
+            Current cutoff
+          </span>
+        </div>
+      </div>
+
+      {/* Disclaimer */}
+      <p className="text-xs text-abwab-muted mt-4">
+        Simulation based on model test set of {simData.total_test_population.toLocaleString()} historical
+        borrowers with known outcomes. Average LGD assumption{' '}
+        {(simData.avg_lgd_assumption * 100).toFixed(0)}%,
+        average facility size SAR {simData.avg_ead_assumption.toLocaleString()}.
+        This is not a forward-looking ECL budget.
+      </p>
     </div>
   )
 }
@@ -332,6 +512,22 @@ export default function CreditModel({ onBack }) {
         </div>
 
       </div>
+
+      {/* ── SECTION 5: Cutoff Simulator ── */}
+      <div className="border-t border-abwab-border my-8" />
+      <SectionLabel>Historical Policy Simulation</SectionLabel>
+
+      <div className="bg-abwab-card border border-abwab-border rounded-lg px-4 py-3
+                      text-sm text-abwab-muted mb-6">
+        Adjust the cutoff threshold to simulate how your approval rate and expected
+        credit loss would have changed on the model test set population of{' '}
+        {modelInsights.simulation_data.total_test_population.toLocaleString()} historical borrowers. This is a back-test on known outcomes, not a
+        forward-looking budget. Assumptions: average LGD{' '}
+        {(modelInsights.simulation_data.avg_lgd_assumption * 100).toFixed(0)}%,
+        average facility size SAR {modelInsights.simulation_data.avg_ead_assumption.toLocaleString()}.
+      </div>
+
+      <CutoffSimulator simData={modelInsights.simulation_data} />
 
     </div>
   )

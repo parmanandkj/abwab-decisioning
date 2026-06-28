@@ -4,30 +4,23 @@ import NavBar from './components/NavBar.jsx'
 import RiskDecisioning from './pages/RiskDecisioning.jsx'
 import Configuration from './pages/Configuration.jsx'
 import CreditModel from './pages/CreditModel.jsx'
+import ECLReport from './pages/ECLReport.jsx'
 
 function AppShell() {
   const navigate = useNavigate()
-  const [showConfig, setShowConfig] = useState(false)
-  const [showCreditModel, setShowCreditModel] = useState(false)
 
   return (
     <div className="min-h-screen bg-abwab-bg text-white font-sans">
       <NavBar
-        onConfigClick={() => {
-          setShowCreditModel(false)
-          setShowConfig(true)
-          navigate('/configuration')
-        }}
-        onCreditModelClick={() => {
-          setShowConfig(false)
-          setShowCreditModel(true)
-          navigate('/credit-model')
-        }}
+        onConfigClick={() => navigate('/configuration')}
+        onCreditModelClick={() => navigate('/credit-model')}
+        onECLReportClick={() => navigate('/ecl-report')}
       />
       <Routes>
         <Route path="/" element={<RiskDecisioning />} />
         <Route path="/configuration" element={<Configuration onBack={() => navigate('/')} />} />
         <Route path="/credit-model" element={<CreditModel onBack={() => navigate('/')} />} />
+        <Route path="/ecl-report" element={<ECLReport onBack={() => navigate('/')} />} />
       </Routes>
     </div>
   )

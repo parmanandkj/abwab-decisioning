@@ -1,6 +1,6 @@
 import { useNavigate, useLocation } from 'react-router-dom'
 
-export default function NavBar({ onConfigClick, onCreditModelClick }) {
+export default function NavBar({ onConfigClick, onCreditModelClick, onECLReportClick }) {
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -33,6 +33,12 @@ export default function NavBar({ onConfigClick, onCreditModelClick }) {
 
         {/* Right side shortcuts */}
         <div className="ml-auto flex items-center gap-2">
+          <button
+            onClick={onECLReportClick}
+            className="text-xs text-abwab-muted border border-abwab-border rounded px-3 py-1.5 hover:border-abwab-purple hover:text-white transition-colors"
+          >
+            ECL Report
+          </button>
           <button
             onClick={onCreditModelClick}
             className="text-xs text-abwab-muted border border-abwab-border rounded px-3 py-1.5 hover:border-abwab-purple hover:text-white transition-colors"

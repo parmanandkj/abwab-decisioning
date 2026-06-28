@@ -1,0 +1,59 @@
+{
+  "summary": {
+    "total_committed_sar": 2035000,
+    "total_ecl_sar": 9095,
+    "ecl_pct_of_portfolio": 0.45,
+    "time_horizon": "12-month ECL (IFRS 9 Stage 1)",
+    "approved_applications": 4,
+    "as_of_date": "June 2026"
+  },
+  "by_risk_band": [
+    {
+      "band": "A",
+      "committed_sar": 1675000,
+      "ecl_sar": 3263,
+      "ecl_pct": 0.19,
+      "application_count": 3
+    },
+    {
+      "band": "B",
+      "committed_sar": 360000,
+      "ecl_sar": 5832,
+      "ecl_pct": 1.62,
+      "application_count": 1
+    }
+  ],
+  "by_product": [
+    {
+      "product": "Working Capital",
+      "committed_sar": 625000,
+      "ecl_sar": 938,
+      "ecl_pct": 0.15
+    },
+    {
+      "product": "Equipment Finance",
+      "committed_sar": 450000,
+      "ecl_sar": 1125,
+      "ecl_pct": 0.25
+    },
+    {
+      "product": "Trade Finance",
+      "committed_sar": 600000,
+      "ecl_sar": 1200,
+      "ecl_pct": 0.20
+    },
+    {
+      "product": "Supply Chain Finance",
+      "committed_sar": 360000,
+      "ecl_sar": 5832,
+      "ecl_pct": 1.62
+    }
+  ],
+  "assumptions": [
+    "12-month ECL horizon under IFRS 9 Stage 1",
+    "EAD is the recommended credit limit for each approved application",
+    "LGD derived from collateral type and coverage ratio lookup table",
+    "Only approved applications included. Referred and declined cases have zero committed exposure.",
+    "PD sourced from the Abwab.ai credit model output"
+  ]
+}
