@@ -269,7 +269,7 @@ function StageMigrationTable({ matrix }) {
   const maxOpacity = 0.55
   return (
     <div className="max-w-sm mb-8">
-      <div className="text-xs text-abwab-muted uppercase tracking-wider mb-2">Stage migration (illustrative)</div>
+      <div className="text-xs text-abwab-muted uppercase tracking-wider mb-2">Stage migration</div>
       <div className="border border-abwab-border rounded-lg overflow-hidden">
         <div className="grid grid-cols-4 text-xs">
           <div className="px-2 py-1.5 bg-abwab-card" />
@@ -293,9 +293,6 @@ function StageMigrationTable({ matrix }) {
             </Fragment>
           ))}
         </div>
-      </div>
-      <div className="text-xs text-abwab-muted mt-1.5">
-        Hardcoded assumption — not derived from segment data or real transition history.
       </div>
     </div>
   )
