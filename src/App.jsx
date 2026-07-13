@@ -5,6 +5,7 @@ import RiskDecisioning from './pages/RiskDecisioning.jsx'
 import Configuration from './pages/Configuration.jsx'
 import CreditModel from './pages/CreditModel.jsx'
 import ECLReport from './pages/ECLReport.jsx'
+import ECLSimulation from './pages/ECLSimulation.jsx'
 
 function AppShell() {
   const navigate = useNavigate()
@@ -21,6 +22,7 @@ function AppShell() {
         <Route path="/configuration" element={<Configuration onBack={() => navigate('/')} />} />
         <Route path="/credit-model" element={<CreditModel onBack={() => navigate('/')} />} />
         <Route path="/ecl-report" element={<ECLReport onBack={() => navigate('/')} />} />
+        <Route path="/ecl-simulation" element={<ECLSimulation onBack={() => navigate('/')} />} />
       </Routes>
     </div>
   )

@@ -29,6 +29,16 @@ export default function NavBar({ onConfigClick, onCreditModelClick, onECLReportC
           >
             Risk Decisioning
           </button>
+          <button
+            onClick={() => navigate('/ecl-simulation')}
+            className={`h-12 px-4 text-sm border-b-2 transition-colors ${
+              location.pathname === '/ecl-simulation'
+                ? 'text-abwab-purple border-abwab-purple bg-abwab-purple-dim font-medium'
+                : 'text-abwab-muted border-transparent hover:text-white'
+            }`}
+          >
+            ECL Simulation
+          </button>
         </div>
 
         {/* Right side shortcuts */}
