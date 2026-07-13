@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, Fragment } from 'react'
 import {
   BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid,
   Tooltip, ResponsiveContainer, Cell,
@@ -7,6 +7,7 @@ import {
   BASE_SEGMENTS, GROWTH_SECTORS, DEFAULT_SCENARIOS, DEFAULT_WEIGHTS,
   DEFAULT_RECOVERY_RATES, DEFAULT_SICR_THRESHOLD_DAYS, SICR_MIGRATION_PCT_PER_15_DAYS,
   DEFAULT_APPROVAL_PD_CUTOFF, DEFAULT_GROWTH_RATE, QUARTERS, SENSITIVITY_SHOCKS,
+  STAGE_MIGRATION_MATRIX,
 } from '../data/portfolio-config.js'
 import {
   buildEffectiveSegments, computeScenarioECL, blendScenarios,
@@ -264,6 +265,42 @@ function CoverageRatioCard({ coverageRatio }) {
   )
 }
 
+function StageMigrationTable({ matrix }) {
+  const maxOpacity = 0.55
+  return (
+    <div className="max-w-sm mb-8">
+      <div className="text-xs text-abwab-muted uppercase tracking-wider mb-2">Stage migration (illustrative)</div>
+      <div className="border border-abwab-border rounded-lg overflow-hidden">
+        <div className="grid grid-cols-4 text-xs">
+          <div className="px-2 py-1.5 bg-abwab-card" />
+          {[1, 2, 3].map(to => (
+            <div key={to} className="px-2 py-1.5 bg-abwab-card text-abwab-muted text-center font-medium">
+              To S{to}
+            </div>
+          ))}
+          {matrix.map(row => (
+            <Fragment key={row.from}>
+              <div className="px-2 py-1.5 bg-abwab-card text-abwab-muted font-medium">S{row.from}</div>
+              {[row.to1, row.to2, row.to3].map((value, i) => (
+                <div
+                  key={i}
+                  className="px-2 py-1.5 text-center text-white font-mono"
+                  style={{ backgroundColor: `rgba(139, 92, 246, ${(value * maxOpacity).toFixed(2)})` }}
+                >
+                  {(value * 100).toFixed(0)}%
+                </div>
+              ))}
+            </Fragment>
+          ))}
+        </div>
+      </div>
+      <div className="text-xs text-abwab-muted mt-1.5">
+        Hardcoded assumption — not derived from segment data or real transition history.
+      </div>
+    </div>
+  )
+}
+
 function QuarterlyTrendChart({ quarterly }) {
   return (
     <div className="bg-abwab-card border border-abwab-border rounded-lg p-4 mb-8">
@@ -428,13 +465,10 @@ export default function ECLSimulation({ onBack }) {
         </div>
       </div>
 
+      <StageMigrationTable matrix={STAGE_MIGRATION_MATRIX} />
+
       <SectionLabel>Quarterly Trend</SectionLabel>
       <QuarterlyTrendChart quarterly={quarterly} />
-
-      <div className="border border-abwab-border rounded-lg px-4 py-3 text-xs text-abwab-muted">
-        v1 estimates on synthetic data. LGD, macro multipliers, and staging thresholds are placeholder
-        assumptions pending calibration against real portfolio history.
-      </div>
 
     </div>
   )

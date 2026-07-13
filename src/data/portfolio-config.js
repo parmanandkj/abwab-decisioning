@@ -42,6 +42,15 @@ export const DEFAULT_GROWTH_RATE = 0 // %
 
 export const QUARTERS = ['Q1', 'Q2', 'Q3', 'Q4']
 
+// Illustrative 3×3 transition matrix for the supporting "stage migration"
+// diagnostic — hardcoded, not derived from segment data or real historical
+// transitions (no transition history exists yet to compute it from).
+export const STAGE_MIGRATION_MATRIX = [
+  { from: 1, to1: 0.90, to2: 0.08, to3: 0.02 },
+  { from: 2, to1: 0.30, to2: 0.55, to3: 0.15 },
+  { from: 3, to1: 0.00, to2: 0.00, to3: 1.00 },
+]
+
 export const SENSITIVITY_SHOCKS = [
   {
     key: 'oil',
