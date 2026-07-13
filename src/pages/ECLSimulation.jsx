@@ -100,9 +100,9 @@ function WhatIfControls({
         </div>
       </div>
 
-      {/* Row 2 — Credit assumptions */}
+      {/* Row 2 — Loss controls */}
       <div className="mb-6 pt-5 border-t border-abwab-border">
-        <div className="text-xs font-medium text-abwab-muted uppercase tracking-wider mb-3">Credit assumptions</div>
+        <div className="text-xs font-medium text-abwab-muted uppercase tracking-wider mb-3">Loss controls</div>
         <div className="grid grid-cols-3 gap-4">
           <SliderRow label="Recovery rate — unsecured" value={recoveryRates.unsecured} min={0} max={100} step={1} unit="%"
             onChange={v => setRecoveryRates(p => ({ ...p, unsecured: v }))} />
