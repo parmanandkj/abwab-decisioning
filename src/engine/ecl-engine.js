@@ -63,6 +63,15 @@ export function computeStageBreakdown(segments, fullMultiplier, recoveryRates) {
   })
 }
 
+export function computeTotalBalance(segments) {
+  return segments.reduce((s, r) => s + r.balance, 0)
+}
+
+export function computeCostOfRisk(blendedEcl, segments) {
+  const totalBalance = computeTotalBalance(segments)
+  return totalBalance > 0 ? blendedEcl / totalBalance : 0
+}
+
 export function computeCoverageRatio(segments, fullMultiplier, recoveryRates) {
   const stage3 = segments.filter(s => s.stage === 3)
   const balance = stage3.reduce((s, r) => s + r.balance, 0)

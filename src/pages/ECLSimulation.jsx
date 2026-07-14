@@ -7,11 +7,11 @@ import {
   BASE_SEGMENTS, GROWTH_SECTORS, DEFAULT_SCENARIOS, DEFAULT_WEIGHTS,
   DEFAULT_RECOVERY_RATES, DEFAULT_SICR_THRESHOLD_DAYS, SICR_MIGRATION_PCT_PER_15_DAYS,
   DEFAULT_APPROVAL_PD_CUTOFF, DEFAULT_GROWTH_RATE, QUARTERS, SENSITIVITY_SHOCKS,
-  STAGE_MIGRATION_MATRIX,
+  STAGE_MIGRATION_MATRIX, PRIOR_PERIOD_ECL,
 } from '../data/portfolio-config.js'
 import {
   buildEffectiveSegments, computeScenarioECL, blendScenarios,
-  computeStageBreakdown, computeCoverageRatio, computeQuarterlyECL, computeSensitivity,
+  computeStageBreakdown, computeCoverageRatio, computeCostOfRisk, computeQuarterlyECL, computeSensitivity,
 } from '../engine/ecl-engine.js'
 import { formatSAR } from '../utils/formatters.js'
 
@@ -257,9 +257,34 @@ function SensitivityTable({ sensitivity }) {
 function CoverageRatioCard({ coverageRatio }) {
   return (
     <div className="bg-abwab-card border border-abwab-border rounded-lg p-6 flex flex-col justify-center h-full">
-      <div className="text-xs text-abwab-muted mb-2">Stage 3 coverage ratio</div>
+      <div className="text-xs text-abwab-muted mb-2">Coverage Ratio</div>
       <div className="text-3xl font-semibold text-white leading-none mb-1">{(coverageRatio * 100).toFixed(1)}%</div>
       <div className="text-xs text-abwab-muted">Stage 3 ECL ÷ Stage 3 balance</div>
+    </div>
+  )
+}
+
+function CostOfRiskCard({ costOfRisk }) {
+  return (
+    <div className="bg-abwab-card border border-abwab-border rounded-lg p-6 flex flex-col justify-center h-full">
+      <div className="text-xs text-abwab-muted mb-2">Cost of Risk</div>
+      <div className="text-3xl font-semibold text-white leading-none mb-1">{(costOfRisk * 100).toFixed(2)}%</div>
+      <div className="text-xs text-abwab-muted">Annualized ECL ÷ average portfolio balance</div>
+    </div>
+  )
+}
+
+function ProvisionChangeCard({ provisionChange }) {
+  const isBuild = provisionChange >= 0
+  const colorClass = isBuild ? 'text-red-400' : 'text-emerald-400'
+  return (
+    <div className="bg-abwab-card border border-abwab-border rounded-lg p-6 flex flex-col justify-center h-full">
+      <div className="text-xs text-abwab-muted mb-2">Provision Build/Release</div>
+      <div className={`text-3xl font-semibold leading-none mb-1 ${colorClass}`}>
+        {isBuild ? '+' : '−'}{formatSAR(Math.abs(provisionChange), true)}
+        <span className="text-base font-medium ml-1">({isBuild ? 'build' : 'release'})</span>
+      </div>
+      <div className="text-xs text-abwab-muted">Change vs. prior quarter</div>
     </div>
   )
 }
@@ -267,7 +292,7 @@ function CoverageRatioCard({ coverageRatio }) {
 function StageMigrationTable({ matrix }) {
   const maxOpacity = 0.55
   return (
-    <div className="max-w-sm">
+    <div className="max-w-sm mb-8">
       <div className="border border-abwab-border rounded-lg overflow-hidden">
         <div className="grid grid-cols-4 text-xs">
           <div className="px-2 py-1.5 bg-abwab-card" />
@@ -396,6 +421,13 @@ export default function ECLSimulation({ onBack }) {
     [effectiveSegments, macroMultipliers.base, recoveryFrac]
   )
 
+  const costOfRisk = useMemo(
+    () => computeCostOfRisk(blended, effectiveSegments),
+    [blended, effectiveSegments]
+  )
+
+  const provisionChange = blended - PRIOR_PERIOD_ECL
+
   const quarterly = useMemo(() => QUARTERS.map((q, i) => ({
     quarter: q,
     Upside: computeQuarterlyECL(effectiveSegments, macroMultipliers.upside, recoveryFrac, i + 1) / 1_000_000,
@@ -446,19 +478,17 @@ export default function ECLSimulation({ onBack }) {
       <SectionLabel>Scenario Comparison</SectionLabel>
       <ScenarioCards scenarioTotals={scenarioTotals} macroMultipliers={macroMultipliers} />
 
+      <div className="grid grid-cols-3 gap-4 mb-8">
+        <CostOfRiskCard costOfRisk={costOfRisk} />
+        <ProvisionChangeCard provisionChange={provisionChange} />
+        <CoverageRatioCard coverageRatio={coverageRatio} />
+      </div>
+
       <SectionLabel>Stage Breakdown</SectionLabel>
       <StageBreakdown stageBreakdown={stageBreakdown} />
 
-      <div className="grid grid-cols-2 gap-6 mb-8">
-        <div>
-          <SectionLabel>Stage Migration</SectionLabel>
-          <StageMigrationTable matrix={STAGE_MIGRATION_MATRIX} />
-        </div>
-        <div>
-          <SectionLabel>Coverage Ratio</SectionLabel>
-          <CoverageRatioCard coverageRatio={coverageRatio} />
-        </div>
-      </div>
+      <SectionLabel>Stage Migration</SectionLabel>
+      <StageMigrationTable matrix={STAGE_MIGRATION_MATRIX} />
 
       <SectionLabel>Quarterly Trend</SectionLabel>
       <QuarterlyTrendChart quarterly={quarterly} />

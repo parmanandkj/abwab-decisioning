@@ -40,6 +40,11 @@ export const SICR_MIGRATION_PCT_PER_15_DAYS = 0.03 // fraction of source-stage b
 export const DEFAULT_APPROVAL_PD_CUTOFF = 8 // %
 export const DEFAULT_GROWTH_RATE = 10 // %
 
+// Placeholder prior-quarter blended full-year ECL, for the provision
+// build/release card. No real prior-period run exists yet — hardcoded
+// modestly below the current default blended ECL (~SAR 7.48M).
+export const PRIOR_PERIOD_ECL = 7_000_000
+
 export const QUARTERS = ['Q1', 'Q2', 'Q3', 'Q4']
 
 // Illustrative 3×3 transition matrix for the supporting "stage migration"
