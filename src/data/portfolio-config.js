@@ -32,13 +32,13 @@ export const DEFAULT_SCENARIOS = {
 
 export const DEFAULT_WEIGHTS = { upside: 20, base: 60, downside: 20 }
 
-export const DEFAULT_RECOVERY_RATES = { unsecured: 20, secured: 70 } // %, LGD = 1 − recovery
+export const DEFAULT_RECOVERY_RATES = { unsecured: 70, secured: 80 } // %, LGD = 1 − recovery
 
 export const DEFAULT_SICR_THRESHOLD_DAYS = 30
 export const SICR_MIGRATION_PCT_PER_15_DAYS = 0.03 // fraction of source-stage balance per 15-day step
 
 export const DEFAULT_APPROVAL_PD_CUTOFF = 8 // %
-export const DEFAULT_GROWTH_RATE = 0 // %
+export const DEFAULT_GROWTH_RATE = 10 // %
 
 export const QUARTERS = ['Q1', 'Q2', 'Q3', 'Q4']
 
