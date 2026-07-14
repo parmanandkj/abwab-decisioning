@@ -59,10 +59,7 @@ export function computeStageBreakdown(segments, fullMultiplier, recoveryRates) {
       (s, r) => s + computeSegmentECL(r, { macroMultiplier: fullMultiplier, recoveryRates }),
       0
     )
-    const weightedLgd = balance > 0
-      ? rows.reduce((s, r) => s + getLGD(r, recoveryRates) * r.balance, 0) / balance
-      : 0
-    return { stage, balance, ecl, eclRate: balance > 0 ? ecl / balance : 0, recoveryRateAssumed: 1 - weightedLgd }
+    return { stage, balance, ecl, eclRate: balance > 0 ? ecl / balance : 0 }
   })
 }
 

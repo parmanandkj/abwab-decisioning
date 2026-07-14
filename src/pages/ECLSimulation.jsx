@@ -217,18 +217,17 @@ function StageBreakdown({ stageBreakdown }) {
       </div>
 
       <div className="border border-abwab-border rounded-lg overflow-hidden">
-        <div className="grid grid-cols-5 gap-4 px-4 py-2 border-b border-abwab-border bg-abwab-card">
-          {['Stage', 'Balance (SAR)', 'ECL (SAR)', 'ECL Rate', 'Recovery rate assumed'].map(h => (
+        <div className="grid grid-cols-4 gap-4 px-4 py-2 border-b border-abwab-border bg-abwab-card">
+          {['Stage', 'Balance (SAR)', 'ECL (SAR)', 'ECL Rate'].map(h => (
             <span key={h} className="text-xs text-abwab-muted font-medium uppercase tracking-wide">{h}</span>
           ))}
         </div>
         {stageBreakdown.map(row => (
-          <div key={row.stage} className="grid grid-cols-5 gap-4 px-4 py-3 border-b border-abwab-border last:border-0 items-center">
+          <div key={row.stage} className="grid grid-cols-4 gap-4 px-4 py-3 border-b border-abwab-border last:border-0 items-center">
             <span className="text-sm font-semibold" style={{ color: STAGE_COLORS[row.stage] }}>Stage {row.stage}</span>
             <span className="text-sm text-white font-mono">{formatSAR(row.balance)}</span>
             <span className="text-sm text-white font-mono">{formatSAR(row.ecl)}</span>
             <span className="text-sm text-abwab-muted">{(row.eclRate * 100).toFixed(2)}%</span>
-            <span className="text-sm text-abwab-muted">{(row.recoveryRateAssumed * 100).toFixed(0)}%</span>
           </div>
         ))}
       </div>
