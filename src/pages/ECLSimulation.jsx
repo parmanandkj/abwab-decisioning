@@ -134,7 +134,7 @@ function HeroMetric({ blended, scenarioTotals }) {
   const high = Math.max(scenarioTotals.upside, scenarioTotals.base, scenarioTotals.downside)
   return (
     <div className="bg-abwab-card border border-abwab-border rounded-lg p-6 mb-8">
-      <div className="text-xs text-abwab-muted mb-2">Blended full-year ECL forecast</div>
+      <div className="text-xs text-abwab-muted mb-2">Projected year-end ECL (blended)</div>
       <div className="text-4xl font-semibold text-white leading-none mb-2">{formatSAR(blended, true)}</div>
       <div className="text-sm text-abwab-muted">Range {formatSAR(low, true)} – {formatSAR(high, true)}</div>
     </div>
@@ -155,7 +155,7 @@ function ScenarioCards({ scenarioTotals, macroMultipliers }) {
             {c.label} ({macroMultipliers[c.key].toFixed(2)}×)
           </div>
           <div className="text-2xl font-semibold text-white leading-none">{formatSAR(scenarioTotals[c.key], true)}</div>
-          <div className="text-xs text-abwab-muted mt-1">Full-year ECL</div>
+          <div className="text-xs text-abwab-muted mt-1">Year-end ECL</div>
         </div>
       ))}
     </div>
@@ -284,7 +284,7 @@ function ProvisionChangeCard({ provisionChange }) {
         {isBuild ? '+' : '−'}{formatSAR(Math.abs(provisionChange), true)}
         <span className="text-base font-medium ml-1">({isBuild ? 'build' : 'release'})</span>
       </div>
-      <div className="text-xs text-abwab-muted">Change vs. prior quarter</div>
+      <div className="text-xs text-abwab-muted">Change vs. prior forecast run (illustrative baseline)</div>
     </div>
   )
 }
@@ -491,6 +491,10 @@ export default function ECLSimulation({ onBack }) {
       <StageMigrationTable matrix={STAGE_MIGRATION_MATRIX} />
 
       <SectionLabel>Quarterly Trend</SectionLabel>
+      <p className="text-xs text-abwab-muted mb-4">
+        Projected ECL if that quarter's economic conditions held for the full year — each point is a
+        standalone estimate, not a slice of the year-end total. Q4 equals the year-end figure shown above.
+      </p>
       <QuarterlyTrendChart quarterly={quarterly} />
 
       <SectionLabel>Sensitivity Table</SectionLabel>
