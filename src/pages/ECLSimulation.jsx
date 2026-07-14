@@ -268,8 +268,7 @@ function CoverageRatioCard({ coverageRatio }) {
 function StageMigrationTable({ matrix }) {
   const maxOpacity = 0.55
   return (
-    <div className="max-w-sm mb-8">
-      <div className="text-xs text-abwab-muted uppercase tracking-wider mb-2">Stage migration</div>
+    <div className="max-w-sm">
       <div className="border border-abwab-border rounded-lg overflow-hidden">
         <div className="grid grid-cols-4 text-xs">
           <div className="px-2 py-1.5 bg-abwab-card" />
@@ -453,8 +452,8 @@ export default function ECLSimulation({ onBack }) {
 
       <div className="grid grid-cols-2 gap-6 mb-8">
         <div>
-          <SectionLabel>Sensitivity Table</SectionLabel>
-          <SensitivityTable sensitivity={sensitivity} />
+          <SectionLabel>Stage Migration</SectionLabel>
+          <StageMigrationTable matrix={STAGE_MIGRATION_MATRIX} />
         </div>
         <div>
           <SectionLabel>Coverage Ratio</SectionLabel>
@@ -462,10 +461,11 @@ export default function ECLSimulation({ onBack }) {
         </div>
       </div>
 
-      <StageMigrationTable matrix={STAGE_MIGRATION_MATRIX} />
-
       <SectionLabel>Quarterly Trend</SectionLabel>
       <QuarterlyTrendChart quarterly={quarterly} />
+
+      <SectionLabel>Sensitivity Table</SectionLabel>
+      <SensitivityTable sensitivity={sensitivity} />
 
     </div>
   )
